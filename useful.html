@@ -1,0 +1,432 @@
+<html>
+<head>
+<TITLE>Yuandan's Startup Screen</TITLE>
+</head>
+<body>
+<center><H1>Yuandan's Startup Screen</H1></center>
+<p>
+<a href="/wang/">
+<img alt="" src="/htmlfile/images/line_owl.gif"></a>
+
+
+
+<script language=JavaScript>
+<!--dCol='#FFFFFF';//date colour.
+fCol='#FFFFFF';//face colour.
+sCol='#FF0000';//seconds colour.
+mCol='#00FF66';//minutes colour.
+hCol='#CCFF66';//hours colour.-->
+dCol='#00FF00';//date colour.
+fCol='#00FF00';//face colour.
+sCol='#FF0000';//seconds colour.
+mCol='#00FF00';//minutes colour.
+hCol='#0000ff';//hours colour.
+ClockHeight=40;
+ClockWidth=40;
+ClockFromMouseY=0;
+ClockFromMouseX=100;
+//Alter nothing below! Alignments will be lost!
+d=new Array("SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY");
+m=new Array("JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER");
+date=new Date();
+day=date.getDate();
+year=date.getYear();
+if (year < 2000) year=year+1900;
+TodaysDate=" "+d[date.getDay()]+" "+day+" "+m[date.getMonth()]+" "+year;
+D=TodaysDate.split('');
+H='...';
+H=H.split('');
+M='....';
+M=M.split('');
+S='.....';
+S=S.split('');
+Face='1 2 3 4 5 6 7 8 9 10 11 12';
+//font='Arial';
+font='Verdana';
+size=1;
+speed=0.6;
+ns=(document.layers);
+ie=(document.all);
+Face=Face.split(' ');
+n=Face.length;
+a=size*10;
+ymouse=0;
+xmouse=0;
+scrll=0;
+props="<font face="+font+" size="+size+" color="+fCol+"><B>";
+props2="<font face="+font+" size="+size+" color="+dCol+"><B>";
+Split=360/n;
+Dsplit=360/D.length;
+HandHeight=ClockHeight/4.5
+HandWidth=ClockWidth/4.5
+HandY=-7;
+HandX=-2.5;
+scrll=0;
+step=0.06;
+currStep=0;
+y=new Array();x=new Array();Y=new Array();X=new Array();
+for (i=0; i < n; i++){y[i]=0;x[i]=0;Y[i]=0;X[i]=0}
+Dy=new Array();Dx=new Array();DY=new Array();DX=new Array();
+for (i=0; i < D.length; i++){Dy[i]=0;Dx[i]=0;DY[i]=0;DX[i]=0}
+if (ns){
+for (i=0; i < D.length; i++)
+document.write('<layer name="nsDate'+i+'" top=0 left=0 height='+a+' width='+a+'><center>'+props2+D[i]+'</font></center></layer>');
+for (i=0; i < n; i++)
+document.write('<layer name="nsFace'+i+'" top=0 left=0 height='+a+' width='+a+'><center>'+props+Face[i]+'</font></center></layer>');
+for (i=0; i < S.length; i++)
+document.write('<layer name=nsSeconds'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+sCol+'><center><b>'+S[i]+'</b></center></font></layer>');
+for (i=0; i < M.length; i++)
+document.write('<layer name=nsMinutes'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+mCol+'><center><b>'+M[i]+'</b></center></font></layer>');
+for (i=0; i < H.length; i++)
+document.write('<layer name=nsHours'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+hCol+'><center><b>'+H[i]+'</b></center></font></layer>');
+}
+if (ie){
+document.write('<div id="Od" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < D.length; i++)
+document.write('<div id="ieDate" style="position:absolute;top:0px;left:0;height:'+a+';width:'+a+';text-align:center">'+props2+D[i]+'</B></font></div>');
+document.write('</div></div>');
+document.write('<div id="Of" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < n; i++)
+document.write('<div id="ieFace" style="position:absolute;top:0px;left:0;height:'+a+';width:'+a+';text-align:center">'+props+Face[i]+'</B></font></div>');
+document.write('</div></div>');
+document.write('<div id="Oh" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < H.length; i++)
+document.write('<div id="ieHours" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+hCol+';text-align:center;font-weight:bold">'+H[i]+'</div>');
+document.write('</div></div>');
+document.write('<div id="Om" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < M.length; i++)
+document.write('<div id="ieMinutes" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+mCol+';text-align:center;font-weight:bold">'+M[i]+'</div>');
+document.write('</div></div>')
+document.write('<div id="Os" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < S.length; i++)
+document.write('<div id="ieSeconds" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+sCol+';text-align:center;font-weight:bold">'+S[i]+'</div>');
+document.write('</div></div>')
+}
+(ns)?window.captureEvents(Event.MOUSEMOVE):0;
+function Mouse(evnt){
+ymouse = (ns)?evnt.pageY+ClockFromMouseY-(window.pageYOffset):event.y+ClockFromMouseY;
+xmouse = (ns)?evnt.pageX+ClockFromMouseX:event.x+ClockFromMouseX;
+}
+(ns)?window.onMouseMove=Mouse:document.onmousemove=Mouse;
+function ClockAndAssign(){
+time = new Date ();
+secs = time.getSeconds();
+sec = -1.57 + Math.PI * secs/30;
+mins = time.getMinutes();
+min = -1.57 + Math.PI * mins/30;
+hr = time.getHours();
+hrs = -1.575 + Math.PI * hr/6+Math.PI*parseInt(time.getMinutes())/360;
+if (ie){
+Od.style.top=window.document.body.scrollTop;
+Of.style.top=window.document.body.scrollTop;
+Oh.style.top=window.document.body.scrollTop;
+Om.style.top=window.document.body.scrollTop;
+Os.style.top=window.document.body.scrollTop;
+}
+for (i=0; i < n; i++){
+ var F=(ns)?document.layers['nsFace'+i]:ieFace[i].style;
+ F.top=y[i] + ClockHeight*Math.sin(-1.0471 + i*Split*Math.PI/180)+scrll;
+ F.left=x[i] + ClockWidth*Math.cos(-1.0471 + i*Split*Math.PI/180);
+ }
+for (i=0; i < H.length; i++){
+ var HL=(ns)?document.layers['nsHours'+i]:ieHours[i].style;
+ HL.top=y[i]+HandY+(i*HandHeight)*Math.sin(hrs)+scrll;
+ HL.left=x[i]+HandX+(i*HandWidth)*Math.cos(hrs);
+ }
+for (i=0; i < M.length; i++){
+ var ML=(ns)?document.layers['nsMinutes'+i]:ieMinutes[i].style;
+ ML.top=y[i]+HandY+(i*HandHeight)*Math.sin(min)+scrll;
+ ML.left=x[i]+HandX+(i*HandWidth)*Math.cos(min);
+ }
+for (i=0; i < S.length; i++){
+ var SL=(ns)?document.layers['nsSeconds'+i]:ieSeconds[i].style;
+ SL.top=y[i]+HandY+(i*HandHeight)*Math.sin(sec)+scrll;
+ SL.left=x[i]+HandX+(i*HandWidth)*Math.cos(sec);
+ }
+for (i=0; i < D.length; i++){
+ var DL=(ns)?document.layers['nsDate'+i]:ieDate[i].style;
+ DL.top=Dy[i] + ClockHeight*1.5*Math.sin(currStep+i*Dsplit*Math.PI/180)+scrll;
+ DL.left=Dx[i] + ClockWidth*1.5*Math.cos(currStep+i*Dsplit*Math.PI/180);
+ }
+currStep-=step;
+}
+function Delay(){
+scrll=(ns)?window.pageYOffset:0;
+Dy[0]=Math.round(DY[0]+=((ymouse)-DY[0])*speed);
+Dx[0]=Math.round(DX[0]+=((xmouse)-DX[0])*speed);
+for (i=1; i < D.length; i++){
+Dy[i]=Math.round(DY[i]+=(Dy[i-1]-DY[i])*speed);
+Dx[i]=Math.round(DX[i]+=(Dx[i-1]-DX[i])*speed);
+}
+y[0]=Math.round(Y[0]+=((ymouse)-Y[0])*speed);
+x[0]=Math.round(X[0]+=((xmouse)-X[0])*speed);
+for (i=1; i < n; i++){
+y[i]=Math.round(Y[i]+=(y[i-1]-Y[i])*speed);
+x[i]=Math.round(X[i]+=(x[i-1]-X[i])*speed);
+}
+ClockAndAssign();
+setTimeout('Delay()',20);
+}
+if (ns||ie)window.onload=Delay;
+</script>
+
+
+
+
+
+
+<ul>
+<li> <A HREF = "../"> Yuandan Lin's Homepage</a>
+<!--<li> <A HREF = "#fau">FAU Homepages</a>-->
+<!--<li> <A href = "/ntadmin/ntadmin.htm"> NT Server Admin</a>
+<li> <A HREF = "#services">Commercial Services</a>
+<li> <A HREF = "#info_s">Information Services</a>
+<li> <A HREF = "#bibliography">Bibliography resources</a>
+<li> <A HREF = "#misc">Misc</a>-->
+<li> <a href = "travel.htm" target=EnpContentWindow>Travel Related</a>
+<!--<li> <A HREF = "#societies">Professional societies & related</a>-->
+<li> <A HREF = "china.htm" target=EnpContentWindow>China and Chinese related</a>
+<!--<li> <A HREF = "computer.htm">Computer Related</a>
+     <A HREF = "file:///C|/ydc.htm"><img alt="ydc" src="cool.gif"></a>-->
+<!-- <li> <A HREF = "http://home.netscape.com/home/whats-cool.html"> What's cool?</a>
+<li> <A HREF = "miscsite.htm">Sites to be explored</a> -->
+<li> <a href = "http://outlook.fau.edu/"
+target=EnpContentWindow>FAU Email (Outlook Web Access)</a>
+<!-- <li> <a href = "http://mail.sci.fau.edu/zimbra/"
+target=EnpContentWindow>College Zimbra Email</a>-->
+<!--
+<li> <a href = "https://brain.math.fau.edu/webmail/" target=EnpContentWindow>WebMail on Brain</a>
+<li> <a href = "https://control.math.fau.edu/webmail/" target=EnpContentWindow>WebMail on Control</a>
+<li> <a href = "https://iss.math.fau.edu/webmail/" target=EnpContentWindow>WebMail on ISS</a>
+-->
+<li> <A HREF = "misc.htm" target=EnpContentWindow>Misc sites</a>
+<li> <a href = "http://www.coursesmart.com">CourseSmart.com</a>
+</ul>
+
+<h2><a name="fau">FAU Homepages</h2></a>
+
+<ul>
+<li><A HREF="http://www.math.fau.edu">Dept of Mathematics</A>
+<li><A href="http://myfau.fau.edu" target=EnpContentWindow>MyFAU</A>
+<li><A href="http://www.science.fau.edu">FAU Charles E. Schmidt College of Science</a>
+<li><A HREF="http://www.fau.edu/" target=EnpContentWindow>FAU Homepage</A>
+<li><a href="http://www.fau.edu/explore/campuses.php">FAU Campuses and Maps</a>
+<li><a href="http://www.fau.edu/library/">FAU Library</a>
+<li><a href="http://www.fau.edu/searchpage/searchpage.html" target=EnpContentWindow>Search FAU Web/Phonebook</a>
+<!-- <li><a href="http://rs6000.adm.fau.edu/cgi-bin/EDsearch.sh">FAU Email Search</a>-->
+<!-- <li><a href="http://www.fau.edu/academic/academic.html">
+   FAU Class Listing</a> -->
+<li><a href="http://www.fau.edu/spot/" target=EnpContentWindow>
+   FAU SPOT</a> (Student Perception of Teaching Search)
+<li><a href="http://www.fau.edu/banner/" target=EnpContentWindow>
+   FAU BANNER</a>
+<li><a href="http://canvas.fau.edu/" target=EnpContentWindow>
+   FAU Canvas</a>
+<li><a href="http://www.fau.edu/sas" target=EnpContentWindow>
+   FAU Student Accessibility Services</a> (SAS, formerly OSD)
+<li><a href="http://www.fau.edu/registrar/acadcal.php" target=EnpContentWindow>
+   FAU Academic Calendar</a>
+<li><a href="http://www.fau.edu/registrar/courses/final-exams.php" target=EnpContentWindow>
+   FAU Final Exam Schedule</a>
+<!--
+<li><a href="https://banner.fau.edu/FAUPdad/lwskdsch.p_dept_schd">
+   FAU Departmental Class Listings</a> -->
+<li><a href="http://www.fau.edu/registrar/courses/index.php">
+   FAU Course Schedules</a>
+<li><a href="https://directory.fau.edu/">
+   FAU Faculty and Staff Directory</a>
+<li><a href="https://25live.collegenet.com/fau/scheduling.html#/home">
+   FAU R25Live</a> (Scheduling classes, events, and more!)
+<li><a href="https://www.fau.edu/registrar/courses/Fall2020_InPerson_Classes_Schedule.php">
+   FAU Fall 2020 Classrooms, Labs, and Studios</a> (Maximum student
+   capacity and technologies)
+<li><a href="https://techevents.fau.edu/">FAU Instructional Tech
+    Events</a> (Can also book a personal appointment there with OIT.)
+<li><a href="http://www.fau.edu/controller/travel/car_rental.php">
+   FAU Car Rental</a> (National/Enterprise)
+
+<!--
+<li><a href="http://www.fau.edu/sched/sched_spr/math.html">
+   FAU Math Class Listing (Spring 2007)</a>
+<li><a href="http://www.fau.edu/sched/sched_sum/math.html">
+   FAU Math Class Listing (Summer 2007)</a>
+<li><a href="http://www.fau.edu/sched/sched_fal/math.html">
+   FAU Math Class Listing (Fall 2007)</a>
+<li><a href="https://banner.fau.edu/FAUPdad/lwskdsch.p_dept_schd">
+   FAU Departmental Class Listings (Spring 2008)</a>
+
+<li><a href="http://oasisw4s.fau.edu/sched/sched_spr/MATH.HTML">
+   FAU Math Current Class Listing</a>
+<li><a href="http://wise.fau.edu/irm/ts/tsdirect.htm" target=EnpContentWindow>On-line Directory Service</a>
+ (Nation-wide)
+<li><A HREF="http://www.cse.fau.edu/">Dept of Computer Science and Engineering</A>
+<li><A HREF="http://www.casr.fau.edu/">Center for Applied Stochastic Research</A>
+<li><A HREF="http://www.ccs.fau.edu/">Center for Complex Systems</A>
+-->
+</ul>
+
+<!--
+<h2><a name="bibliography">Bibliography resources</h2>
+
+<ul>
+<li><a href="tn3270://nermvs.nerdc.ufl.edu/">
+    Florida State University Libraries (LUIS) (tn3270)</a>
+<li><a href="telnet://sands.nerdc.ufl.edu/">
+    Florida State University Libraries (LUIS) (telnet)</a>
+<li><A HREF="telnet://iris.rutgers.edu/">
+    Rutgers University Library </A>
+<li><a href="http://www.carl.org/uncover/unchome.html">
+    UnCover</a> (UnCover provides table of contents indexing from nearly
+    17,000 journals worldwide.)
+<li><a href="HTTP://WWW.BOOKS.COM/INFO.HTM">
+    Books</a> (250,000 title)
+<li><a href="ftp://draco.nova.edu/pub/sunflash/www/welcome.html">
+    SunFlash</a>
+<li><a href="http://www.sun.com/sunworldonline/">
+    SunWorld Online</a>
+</ul>
+
+<H2><A NAME = "services">Commercial Services </H2></A>
+<ul>
+<li><A HREF="http://galaxy.einet.net/galaxy.html">
+    Galaxy</A>
+<li><a href="http://nearnet.gnn.com/gnn/GNNhome.html">
+    Global Net Navigator (GNN)</a>
+<li><a href="http://home.netscape.com/">
+    Notscape Homepage</a>
+</ul>
+
+<H2><A NAME = "info_s">Information Services</H2></a>
+<ul>
+
+<LI><A HREF="gopher://gopher.stanford.edu:4320/1areacode">
+    US and Canada Area codes</A>
+<LI><A HREF="http://www.usps.gov/ncsc/">
+    US Zip Code Directory</A>
+<li><a href="http://www.usps.gov/">US Postal Services</a>
+<LI><A HREF="http://att.net/dir800">AT&amp;T's 800 Directory</A>
+<LI><A HREF="http://lcweb.loc.gov/homepage/lchp.html">Library of Congress</A>
+<LI><A HREF="http://www.ai.mit.edu/stocks/topstocks.html">Top Stocks</A>
+<LI><A HREF="http://gnn.com/cgi-bin/gnn/currency">
+    Currency Converter</A>
+
+</ul>
+
+<H2><A NAME = "misc">Misc</H2>
+<ul>
+
+<li><a href="http://nytimesfax.com/times.pdf">
+    The New York Times Internet Edition</a>
+    Need a Portable Document Format (pdf) file reader.
+    Click <a href="http://www.adobe.com/Amber/">here</a>
+    to see how to download Acrobat, a free pdf viewer.
+<li><a href="http://www.yahoo.com/">Yahoo</a> (nice web search job)
+<li><a href="http://www.cs.colorado.edu/home/mcbryan/WWWW.html">The
+World Wide Web Worm</a>
+
+<li><a href="http://www.edmund.com">Edmund's Automobile Buyer's Guides</a>
+
+<li><a href=http://rs560.cl.msu.edu/weather/interactive.html>
+    Interactive Weather Browser</a>
+<li><a href="http://webcrawler.cs.washington.edu/">The WebCrawler</a>
+<li><a href="http://lycos.cs.cmu.edu">Another WebCrawler</a>
+
+<li><a href="http://info.cern.ch/hypertext/DataSources/Top.html">WWW
+Virtual Library.</a>
+
+<li><a href="http://nearnet.gnn.com/gnn.html">The Global Network
+Navigator,</a> from O'Reilly and Associates.  A commercially-produced
+"Internet magazine".
+
+<li><a href="gopher://gopher.cic.net/11/e-serials">Electronic
+Serials:</a> CICnet union catalog
+
+<li><a href="http://cuiwww.unige.ch/w3catalog">Electronic resources by
+subject.</a> An index maintained by the <a
+href="http://cuiwww.unige.ch">University of Geneva [Switzerland].</a>
+
+<li>Riceinfo <a
+href="http://riceinfo.rice.edu/RiceInfo/Subject.html">Information by
+Subject Area</a>.  An index maintained by <a
+href="http://www.rice.edu/">Rice University.</a>
+
+<li>
+<a href="http://hcrl.open.ac.uk/psyche.html">Penrose's book</a>
+
+</UL>
+
+<h2><a name="societies">Professional societies & related</a></h2>
+<ul>
+<li><a href="http://www.math.psu.edu/OtherMath.html">PSU Math server</a>
+<li><a href="http://e-math.ams.org/">AMS</a>
+<li><a href="http://info.acm.org">ACM
+<li><a href="http://www.ieee.org/">IEEE</a>
+<li><a href=" http://www.nsf.gov">NSF</a>
+<li><a href="http://enterprise.osd.mil/jumpoff.html">DOD</a>
+<li><a href="http://web.fie.com/web/fed/afr/">AFOSR</a>
+<li><a href="http://www.siam.org">SIAM</a>
+<li><a href="http://sigact.acm.org/tcs-rolodex">Theo Comp Sci Rolodex</a>
+<li><a href="telnet://e-math.ams.com">AMS-TELNET</a> (login and passwd e-math)
+<li><a href="http://math.technion.ac.il/iic">Lin Alg</a>
+<LI>
+  <A HREF="http://www-control.eng.cam.ac.uk/extras/Virtual_Library/Control_VL.html">
+Control HomePage at Cambridge (many links!)</A>
+<LI>
+  <A HREF="http://euclid.math.fsu.edu/Science/math.html">
+The World-Wide Web Virtual Library: Mathematics</a>
+
+</ul>
+
+<h2>Tech Support</h2>
+<ul>
+<li><a href="http://www.mathworks.com/">Mathworks</a>
+</ul>
+-->
+
+<center>
+<form>
+  <script language="javascript">
+  <!--
+  var satellite = null;
+  function searchSatellite() {
+    satellite = window.open('http://www.google.com/', 'searchsat')
+    if (satellite != null) {
+      if (satellite.opener == null) {
+        satellite.opener = self;
+      }
+    }
+  }
+  document.writeln('<input type="button" value="Launch Google" onClick="searchSatellite()">');
+  // -->
+  </script>
+</form>
+</center>
+
+<!--
+<CENTER><h1>Search Engines<br></h1>
+<h1>Select a search engine to use and then click on GO!</h1><br>
+<FORM METHOD=POST ACTION="http://www.pictac.com/cgi-bin/redir">
+            <SELECT NAME="Target">
+        <OPTION VALUE="http://www.pictac.com">SEARCH ENGINES
+        <OPTION VALUE="http://www.pictac.com">======================
+        <OPTION VALUE="http://www.yahoo.com">Yahoo
+        <OPTION VALUE="http://www.webcrawler.com">Webcrawler
+        <OPTION VALUE="http://www.altavista.digital.com">Alta Vista
+        <OPTION VALUE="http://www.infoseek.com/">InfoSeek
+        <OPTION VALUE="http://wwww.cs.colorado.edu/wwww">World Wide Worm
+        <OPTION VALUE="http://www.stpt.com/">Starting Point
+        <OPTION VALUE="http://gnn.com/gnn/wic/index.html">Whole Internet Catalog
+        <OPTION VALUE="http://www.dejanews.com/forms/dnq.html">Deja News
+        <OPTION VALUE="http://harvest.cs.colorado.edu/">Harvest
+        <OPTION VALUE="http://www.lycos.com/">Lycos
+        <OPTION VALUE="http://www.opentext.com:8080/">Open Text
+        <OPTION VALUE="http://www.excite.com/">Excite
+        <OPTION VALUE="http://galaxy.einet.net/">Galaxy
+        <OPTION VALUE="http://www.pictac.com">---------------------
+        </SELECT><INPUT TYPE=SUBMIT VALUE=" GO! ">
+        </FORM>
+</CENTER>
+-->
+
+</body>
+</html>
