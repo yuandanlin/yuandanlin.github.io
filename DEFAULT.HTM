@@ -1,0 +1,1578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Yuandan Lin</title>
+  
+  <link rev="made" href="mailto:lin@fau.edu?subject=visited%20your%20homepage">
+</head>
+ <body bgcolor="#ccffff">
+ 
+
+
+<script language=JavaScript>
+<!--dCol='#FFFFFF';//date colour.
+fCol='#FFFFFF';//face colour.
+sCol='#FF0000';//seconds colour.
+mCol='#00FF66';//minutes colour.
+hCol='#CCFF66';//hours colour.-->
+dCol='#00FF00';//date colour.
+fCol='#00FF00';//face colour.
+sCol='#FF0000';//seconds colour.
+mCol='#00FF00';//minutes colour.
+hCol='#0000ff';//hours colour.
+ClockHeight=40;
+ClockWidth=40;
+ClockFromMouseY=0;
+ClockFromMouseX=100;
+//Alter nothing below! Alignments will be lost!
+d=new Array("SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY");
+m=new Array("JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER");
+date=new Date();
+day=date.getDate();
+year=date.getYear();
+if (year < 2000) year=year+1900;
+TodaysDate=" "+d[date.getDay()]+" "+day+" "+m[date.getMonth()]+" "+year;
+D=TodaysDate.split('');
+H='...';
+H=H.split('');
+M='....';
+M=M.split('');
+S='.....';
+S=S.split('');
+Face='1 2 3 4 5 6 7 8 9 10 11 12';
+//font='Arial';
+font='Verdana';
+size=1;
+speed=0.6;
+ns=(document.layers);
+ie=(document.all);
+Face=Face.split(' ');
+n=Face.length;
+a=size*10;
+ymouse=0;
+xmouse=0;
+scrll=0;
+props="<font face="+font+" size="+size+" color="+fCol+"><B>";
+props2="<font face="+font+" size="+size+" color="+dCol+"><B>";
+Split=360/n;
+Dsplit=360/D.length;
+HandHeight=ClockHeight/4.5
+HandWidth=ClockWidth/4.5
+HandY=-7;
+HandX=-2.5;
+scrll=0;
+step=0.06;
+currStep=0;
+y=new Array();x=new Array();Y=new Array();X=new Array();
+for (i=0; i < n; i++){y[i]=0;x[i]=0;Y[i]=0;X[i]=0}
+Dy=new Array();Dx=new Array();DY=new Array();DX=new Array();
+for (i=0; i < D.length; i++){Dy[i]=0;Dx[i]=0;DY[i]=0;DX[i]=0}
+if (ns){
+for (i=0; i < D.length; i++)
+document.write('<layer name="nsDate'+i+'" top=0 left=0 height='+a+' width='+a+'><center>'+props2+D[i]+'</font></center></layer>');
+for (i=0; i < n; i++)
+document.write('<layer name="nsFace'+i+'" top=0 left=0 height='+a+' width='+a+'><center>'+props+Face[i]+'</font></center></layer>');
+for (i=0; i < S.length; i++)
+document.write('<layer name=nsSeconds'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+sCol+'><center><b>'+S[i]+'</b></center></font></layer>');
+for (i=0; i < M.length; i++)
+document.write('<layer name=nsMinutes'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+mCol+'><center><b>'+M[i]+'</b></center></font></layer>');
+for (i=0; i < H.length; i++)
+document.write('<layer name=nsHours'+i+' top=0 left=0 width=15 height=15><font face=Arial size=3 color='+hCol+'><center><b>'+H[i]+'</b></center></font></layer>');
+}
+if (ie){
+document.write('<div id="Od" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < D.length; i++)
+document.write('<div id="ieDate" style="position:absolute;top:0px;left:0;height:'+a+';width:'+a+';text-align:center">'+props2+D[i]+'</B></font></div>');
+document.write('</div></div>');
+document.write('<div id="Of" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < n; i++)
+document.write('<div id="ieFace" style="position:absolute;top:0px;left:0;height:'+a+';width:'+a+';text-align:center">'+props+Face[i]+'</B></font></div>');
+document.write('</div></div>');
+document.write('<div id="Oh" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < H.length; i++)
+document.write('<div id="ieHours" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+hCol+';text-align:center;font-weight:bold">'+H[i]+'</div>');
+document.write('</div></div>');
+document.write('<div id="Om" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < M.length; i++)
+document.write('<div id="ieMinutes" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+mCol+';text-align:center;font-weight:bold">'+M[i]+'</div>');
+document.write('</div></div>')
+document.write('<div id="Os" style="position:absolute;top:0px;left:0px"><div style="position:relative">');
+for (i=0; i < S.length; i++)
+document.write('<div id="ieSeconds" style="position:absolute;width:16px;height:16px;font-family:Arial;font-size:16px;color:'+sCol+';text-align:center;font-weight:bold">'+S[i]+'</div>');
+document.write('</div></div>')
+}
+(ns)?window.captureEvents(Event.MOUSEMOVE):0;
+function Mouse(evnt){
+ymouse = (ns)?evnt.pageY+ClockFromMouseY-(window.pageYOffset):event.y+ClockFromMouseY;
+xmouse = (ns)?evnt.pageX+ClockFromMouseX:event.x+ClockFromMouseX;
+}
+(ns)?window.onMouseMove=Mouse:document.onmousemove=Mouse;
+function ClockAndAssign(){
+time = new Date ();
+secs = time.getSeconds();
+sec = -1.57 + Math.PI * secs/30;
+mins = time.getMinutes();
+min = -1.57 + Math.PI * mins/30;
+hr = time.getHours();
+hrs = -1.575 + Math.PI * hr/6+Math.PI*parseInt(time.getMinutes())/360;
+if (ie){
+Od.style.top=window.document.body.scrollTop;
+Of.style.top=window.document.body.scrollTop;
+Oh.style.top=window.document.body.scrollTop;
+Om.style.top=window.document.body.scrollTop;
+Os.style.top=window.document.body.scrollTop;
+}
+for (i=0; i < n; i++){
+ var F=(ns)?document.layers['nsFace'+i]:ieFace[i].style;
+ F.top=y[i] + ClockHeight*Math.sin(-1.0471 + i*Split*Math.PI/180)+scrll;
+ F.left=x[i] + ClockWidth*Math.cos(-1.0471 + i*Split*Math.PI/180);
+ }
+for (i=0; i < H.length; i++){
+ var HL=(ns)?document.layers['nsHours'+i]:ieHours[i].style;
+ HL.top=y[i]+HandY+(i*HandHeight)*Math.sin(hrs)+scrll;
+ HL.left=x[i]+HandX+(i*HandWidth)*Math.cos(hrs);
+ }
+for (i=0; i < M.length; i++){
+ var ML=(ns)?document.layers['nsMinutes'+i]:ieMinutes[i].style;
+ ML.top=y[i]+HandY+(i*HandHeight)*Math.sin(min)+scrll;
+ ML.left=x[i]+HandX+(i*HandWidth)*Math.cos(min);
+ }
+for (i=0; i < S.length; i++){
+ var SL=(ns)?document.layers['nsSeconds'+i]:ieSeconds[i].style;
+ SL.top=y[i]+HandY+(i*HandHeight)*Math.sin(sec)+scrll;
+ SL.left=x[i]+HandX+(i*HandWidth)*Math.cos(sec);
+ }
+for (i=0; i < D.length; i++){
+ var DL=(ns)?document.layers['nsDate'+i]:ieDate[i].style;
+ DL.top=Dy[i] + ClockHeight*1.5*Math.sin(currStep+i*Dsplit*Math.PI/180)+scrll;
+ DL.left=Dx[i] + ClockWidth*1.5*Math.cos(currStep+i*Dsplit*Math.PI/180);
+ }
+currStep-=step;
+}
+function Delay(){
+scrll=(ns)?window.pageYOffset:0;
+Dy[0]=Math.round(DY[0]+=((ymouse)-DY[0])*speed);
+Dx[0]=Math.round(DX[0]+=((xmouse)-DX[0])*speed);
+for (i=1; i < D.length; i++){
+Dy[i]=Math.round(DY[i]+=(Dy[i-1]-DY[i])*speed);
+Dx[i]=Math.round(DX[i]+=(Dx[i-1]-DX[i])*speed);
+}
+y[0]=Math.round(Y[0]+=((ymouse)-Y[0])*speed);
+x[0]=Math.round(X[0]+=((xmouse)-X[0])*speed);
+for (i=1; i < n; i++){
+y[i]=Math.round(Y[i]+=(y[i-1]-Y[i])*speed);
+x[i]=Math.round(X[i]+=(x[i-1]-X[i])*speed);
+}
+ClockAndAssign();
+setTimeout('Delay()',20);
+}
+if (ns||ie)window.onload=Delay;
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+<center>
+<img alt="Yuandan Lin's Homepage" src="html/Yuandan3.gif">
+</center>
+
+<p>
+Please send your comments to
+<a href="mailto:lin@fau.edu?subject=visited your homepage">lin@fau.edu</a>.
+<p><img alt="" src="html/owl-anim.gif">
+
+<h2>Who is Yuandan Lin</h2>
+
+<ul>
+<li>Professor,
+    <a href="/">Department of Mathematical Sciences</a>,
+    <a href="http://www.fau.edu/">Florida Atlantic University</a>.
+
+<li>Ph.D. in Mathematics, 
+    <a href="http://www.math.rutgers.edu/">Department of Mathematics</a>,
+    <a href="http://www.rutgers.edu/">Rutgers University</a>,
+    1992.<br>
+    Thesis advisor: Professor
+    <a href="http://www.math.rutgers.edu/~sontag/">Eduardo D. Sontag</a>.
+    <br>
+    Thesis title: <i> Lyapunov Function Techniques for Stabilization </i>
+</ul>
+
+<hr>
+<h2>Yuandan Lin's Research Interests</h2>
+
+Dr. Lin's current research interests lie in nonlinear control theory,
+with emphasis on the Lyapunov theory of stability and stabilizability of
+general nonlinear systems.
+
+<hr>
+<h2>How to Contact Yuandan Lin</h2>
+-->
+ 
+<center>
+<h1><a href="html/useful.htm"><font color="#000000">Dr. Yuandan Lin</font></a>
+</h1>
+</center>
+<strong>
+ Professor<br>
+ <a href="/">Department of Mathematical Sciences</a><br>
+ <a href="http://www.fau.edu/">Florida Atlantic University</a><br>
+ 777 Glades Road<br>
+<a href="http://www.myboca.org/">Boca Raton</a>, Florida 33431-0991<br>
+<!-- <a href="http://www.ci.boca-raton.fl.us/">Boca Raton</a>, Florida 33431-0991<br>-->
+ <!--<a href="http://BocaRaton.com/">Boca Raton</a>, Florida 33431-0991<br>-->
+ USA
+</strong>
+<p>
+
+<!--
+Office:   Room 220, Science &amp; Engineering Building<br>
+Phone:    +1 (561) 297-3343<br>
+Fax:      +1 (561) 297-2436<br>
+Email: <a
+href="mailto:lin@fau.edu?subject=visited%20your%20homepage">lin@fau.edu</a><br>
+-->
+
+<hr>
+<center><table BORDER COLS=2 WIDTH="55%" BGCOLOR="#CCFFFF" >
+<tr BGCOLOR="#FFFFCC">
+ <td ALIGN=center><b>Office</b></td>
+ <td align=center><b><a href=http://uavp.fau.edu/Flashmap/FAUMap.html><font color="0000ff">Room 220, Science &amp; Engineering Building (SE 220)</font></a></b></td>
+</tr>
+<tr BGCOLOR="#FFFFCC">
+ <td ALIGN=center><b>Telephone</b></td>
+ <td align=center><b>+1 (561) 297-3343</b></td>
+</tr>
+<tr BGCOLOR="#FFFFCC">
+ <td ALIGN=center><b>Fax</b></td>
+ <td align=center><b>+1 (561) 297-2436</b></td>
+</tr>
+<tr BGCOLOR="#FFFFCC">
+ <td ALIGN=center><b>Email</b></td>
+ <td align=center><b><a href="mailto:lin@fau.edu?subject=visited%20your%20homepage">lin @ fau . edu</a></b></td>
+</tr>
+
+</table></center>
+
+<!--
+<hr>
+<center><table BORDER COLS=2 WIDTH="75%" BGCOLOR="#CCFFFF" >
+<tr BGCOLOR="#FFFFCC">
+<td ALIGN=center><b><a href=HTML/vita.pdf>Vita</a></b></td>
+
+<td align=center><b><a href=HTML/publications.html>Publications</a></b></td>
+
+</tr>
+</table></center>
+-->
+
+
+
+<hr>
+<center>
+<h2>Spring 2012 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 4402-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/2012spring/maa4402/><font
+  color="0000ff">Introductory Complex Analysis</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:00am &ndash; 10:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">BU 105
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2281-005
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/2012spring/mac2281/>
+          <font color="0000ff">Calculus for Engineers 1</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00am &ndash; 12:10pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 113
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--
+<hr>
+<center>
+<h2>Fall 2011 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 2302-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/2011fall/map2302/><font
+  color="0000ff">Differential Equations 1</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 12:30pm &ndash; 1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">IS 113
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2313-004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/2011fall/mac2313/>
+          <font color="0000ff">Calculus 3</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 5:00pm &ndash; 6:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 112
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+<!--
+<hr>
+<center>
+<h2>Spring 2011 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2282-003
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/2011spring/CalcEng2/><font
+  color="0000ff">Calculus for Engineers 2</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00am &ndash; 12:25pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 114
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAD 2104-003
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/2011spring/DiscreteMath/>
+          <font color="0000ff">Discrete Mathematics</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 2:00pm &ndash; 2:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">BU 308
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Fall 2010 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 3305-002
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/2010fall/E-Math1/><font
+  color="0000ff">Engineering Mathematics 1</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 9:00--9:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 115
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2312-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/2010fall/Calc2/>
+          <font color="0000ff">Calculus 2</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 10:00--10:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 124
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Spring 2010 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAS 2103-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/2010spring/matrix/><font color="0000ff">Matrix Theory</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 12:00--12:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 114
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2282-002
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/2010spring/CalcEng2/>
+          <font color="0000ff">Calculus for Engineers 2</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 2:00--3:25pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">SO 170
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Fall 2009 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 3305-002
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/fall2009/E-Math1/><font color="0000ff">Engineering Mathematics 1</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MF 9:00--9:50am &amp; W 8:00--9:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 109
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 2302-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2009/DifferentialEquations/>
+          <font color="0000ff">Differential Equations 1</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 12:30--1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 110
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<center>
+<h2>Spring 2009 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-002
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">
+         <a href=classes/spring2009/E-Math2/><font color="0000ff">Engineering Mathematics 2</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 9:00--9:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 113
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAS 2103-004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2009/MatrixTheory/><font color="0000ff">Matrix Theory</font></a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:00--10:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 113
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+ <!--URL:      http://www.math.fau.edu/lin/
+-->
+
+<!--
+<hr>
+<center>
+<h2>Fall 2008 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2312-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2008/Calc2/>Calculus 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:00--10:50am<br>
+			   Th 10:00--10:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 115<br>
+                          GS 107
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2312-002
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2008/Calc2/>
+Calculus 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00--11:50am<br>
+			   Th 11:00--11:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 110<br>
+			  GS 107
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Summer 2008 Teaching</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/summer2008/e-math2/>
+Engineering Mathematics II</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--2:05pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 115<br>
+      </div>
+      </td>
+    </tr>
+</table>
+-->
+
+
+
+
+<!--
+<hr>
+<center>
+<h2>Spring 2008 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 5229-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Introductory Analysis 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 12:00--12:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">BU 308
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-008
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2008/methods/>
+Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 119<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAT 5946-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Supervised University Instruction in Math
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 3:30--4:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FL 101
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+
+
+<!--
+<hr>
+<center>
+<h2>Fall 2007 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-006
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2007/methods/>
+Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:00--10:50am<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 111<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 5228-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Introductory Analysis I</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00--11:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">SE 215
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAT 5946-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Supervised University Instruction in Math
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 4:00--5:20pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FL 105
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+
+
+<!--
+<hr>
+<center>
+<h2>Spring 2007 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-008
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2007/methods/>
+Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 208<br>
+      </div>
+      </td>
+    </tr>
+-->
+<!--
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 6407-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Complex Analysis II</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">BU 102
+      </div>
+      </td>
+    </tr>
+-->
+<!--
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAT 5946-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Supervised University Instruction in Math
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 3:30--4:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 208
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAT 6907-004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Topics in Analysis
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TBA
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TBA
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Fall 2006 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-008
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2006/methods/>
+Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00--11:50am<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 111<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 6406-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2006/ComplexAnalysis1/>Complex Analysis I</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">SE 215
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAT 5946-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">Supervised University Instruction in Math
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">TTh 4:00 - 5:20pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FL 101
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+<!--
+<hr>
+<center>
+<h2>Summer 2006 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 2302-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/summer2006/DifferentialEquationsI/>
+Differential Equations I</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 9:15--10:20am<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 208<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2313-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/summer2006/Calc3/>Calculus III</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 1:00--2:05pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 111
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+<!--
+<hr>
+<center>
+<h2>Spring 2006 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 2302-004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2006/DifferentialEquationsI/>
+Differential Equations I</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 108<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2006/e-math2/>Engineering
+  Math II</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MW 5:30--6:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GS 103
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+
+<!--
+<hr>
+<center>
+<h2>Fall 2005 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2005/E-Math2/>Engineering
+  Math II</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 11:00--11:50am<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 227<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAD 3400-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2005/NumericalMethods/>
+Numerical Methods</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">SC 178
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+
+<!--
+<hr>
+<center>
+<h2>Spring 2005 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2313-003
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2005/calc3/>Calculus 3</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 2:00--2:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 113<br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<hr>
+<center>
+<h2>Fall 2004 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 4200-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2004/ModernAnalysis/>Modern Analysis</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 12:00--12:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 113<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2312-003
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2004/calc2/>Calculus 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 3:00--3:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FL 427
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+<!-- Spring 2004 Courses
+
+<hr>
+<center>
+<h2>Spring 2004 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-010
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2004/methods/>Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 3:00--3:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 112<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2312-004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2004/calc2/>Calculus 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 4:00--4:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 113
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+
+
+<!--%%%%%%%%%
+
+<hr>
+<center>
+<h2>Fall 2003 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 4402-001
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2003/ComplexAnalysis/>Complex Analysis</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 12:00--12:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GCS 109<br>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2233-008
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2003/methods/methods_syllabus.html>Methods of Calculus</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FLH 420<br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+</p>
+<hr> 
+
+<center>
+<h2>Summer 2003 Course</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MGF 1106-11477
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/summer2003/mfla1/>Mathematics for Liberal Arts 1</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:30am--12:40pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GCS 119
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+
+<!--
+</p>
+<hr> 
+
+<center>
+<h2>Spring 2003 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-16086
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2003/emath2/>Engineering Mathematics 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 9:00--9:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FLH 426
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAC 2311-15925
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2003/calc1/>Calculus I</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWThF 4:00--4:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">PS 112<br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<!--
+<center>
+<h2>Fall 2002 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 4306-5004
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2002/emath2/>Engineering Mathematics 2</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 9:00--9:50am
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">SC 180
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAA 4200-4772
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/fall2002/ma/>Modern Analysis</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 10:00--10:50am<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">FLH 427<br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+-->
+
+
+
+<!--
+</p>
+<hr> 
+<center>
+<h2>Spring 2002 Courses</h2>
+</center>
+
+<table cellpadding="2" cellspacing="2" border="2" width="100%">
+  <tbody>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MAP 2302-4764
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2002/de1/default.htm>Differential Equations 1</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 1:00--1:50pm
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">GCS 103
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top">
+      <div align="Center">MGF 1106-4812
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center"><a href=classes/spring2002/mfla1/home.html>Mathematics for Liberal Arts 1</a>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">MWF 2:00--2:50pm<br>
+      </div>
+      </td>
+      <td valign="Top">
+      <div align="Center">ED 119<br>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+-->
+
+<p>
+<hr> 
+Last modified 
+	  <script type="text/javascript">
+	  var dd = new Date(document.lastModified);
+	  var mm = dd.getMonth()+1;
+	  switch(mm){
+	  case(mm=1): document.write("January "); break
+	  case(mm=2): document.write("February "); break
+	  case(mm=3): document.write("March "); break
+	  case(mm=4): document.write("April "); break
+	  case(mm=5): document.write("May "); break
+	  case(mm=6): document.write("June "); break
+          case(mm=7): document.write("July "); break
+          case(mm=8): document.write("August "); break
+          case(mm=9): document.write("September "); break
+          case(mm=10): document.write("October "); break
+          case(mm=11): document.write("November "); break
+          case(mm=12): document.write("December "); break
+	  default: document.write("Xxx "); break };
+	  document.write(dd.getDate(),", ");
+	  document.write(dd.getFullYear(),", ");
+	  </script>
+by <a href="mailto:lin@fau.edu?subject=visited%20your%20homepage">
+Yuandan Lin.</a>
+<!--
+Please  send your
+comments to <a href="mailto:lin@fau.edu?subject=visited%20your%20homepage">
+lin at fau dot edu</a>
+ -->
+</body>
+</html>

@@ -1,0 +1,404 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<base target="right">
+<title>最全注册</title>
+<meta name="Microsoft Border" content="none, default">
+<script LANGUAGE="JavaScript" FPTYPE="dynamicanimation">
+<!--
+  // If you want to change this script, you must also make the following
+  // changes so that FrontPage will not overwrite your new script.
+  // In the script tag, change type="dynamicanimation" to type="mydynamicanimation"
+  // In the first script statement, change "dynamicanimation" to "mydynamicanimation"
+  // Throughout the HTML content, change dynamicanimation= to mydynamicanimation=
+  // Change function dynAnimation to function mydynAnimation
+  // In the body tag, change onload="dynAnimation()" to onload="mydynAnimation()"
+  dynamicanimAttr = "dynamicanimation"
+  animateElements = new Array()
+  currentElement = 0
+  speed = 0
+  stepsZoom = 8
+  stepsWord = 8
+  stepsFly = 12
+  stepsSpiral = 16
+  steps = stepsZoom
+  step = 0
+  outString = ""
+  function dynAnimation()
+  {
+    var ms = navigator.appVersion.indexOf("MSIE")
+    ie4 = (ms>0) && (parseInt(navigator.appVersion.substring(ms+5, ms+6)) >= 4)
+    if(!ie4)
+    {
+      if((navigator.appName == "Netscape") &&
+         (parseInt(navigator.appVersion.substring(0, 1)) >= 4))
+      {
+        for (index=document.layers.length-1; index >= 0; index--)
+        {
+            layer=document.layers[index]
+            if (layer.left==10000)
+                layer.left=0
+        }
+      }
+      return
+    }
+    for (index=document.all.length-1; index >= document.body.sourceIndex; index--)
+    {
+      el = document.all[index]
+      animation = el.getAttribute(dynamicanimAttr, false)
+      if(null != animation)
+      {
+        if(animation == "dropWord" || animation == "flyTopRightWord" || animation == "flyBottomRightWord")
+        {
+          ih = el.innerHTML
+          outString = ""
+          i1 = 0
+          iend = ih.length
+          while(true)
+          {
+            i2 = startWord(ih, i1)
+            if(i2 == -1)
+              i2 = iend
+            outWord(ih, i1, i2, false, "")
+            if(i2 == iend)
+              break
+            i1 = i2
+            i2 = endWord(ih, i1)
+            if(i2 == -1)
+              i2 = iend
+            outWord(ih, i1, i2, true, animation)
+            if(i2 == iend)
+              break
+            i1 = i2
+          }
+          document.all[index].innerHTML = outString
+          document.all[index].style.posLeft = 0
+          document.all[index].setAttribute(dynamicanimAttr, null)
+        }
+        if(animation == "zoomIn" || animation == "zoomOut")
+        {
+          ih = el.innerHTML
+          outString = "<SPAN " + dynamicanimAttr + "=\"" + animation + "\" style=\"position: relative; left: 10000;\">"
+          outString += ih
+          outString += "</SPAN>"
+          document.all[index].innerHTML = outString
+          document.all[index].style.posLeft = 0
+          document.all[index].setAttribute(dynamicanimAttr, null)
+        }
+      }
+    }
+    i = 0
+    for (index=document.body.sourceIndex; index < document.all.length; index++)
+    {
+      el = document.all[index]
+      animation = el.getAttribute(dynamicanimAttr, false)
+      if (null != animation)
+      {
+        if(animation == "flyLeft")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)-el.offsetWidth
+          el.style.posTop = 0
+        }
+        else if(animation == "flyRight")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)+document.body.offsetWidth
+          el.style.posTop = 0
+        }
+        else if(animation == "flyTop" || animation == "dropWord")
+        {
+          el.style.posLeft = 0
+          el.style.posTop = document.body.scrollTop-offsetTop(el)-el.offsetHeight
+        }
+        else if(animation == "flyBottom")
+        {
+          el.style.posLeft = 0
+          el.style.posTop = document.body.scrollTop-offsetTop(el)+document.body.offsetHeight
+        }
+        else if(animation == "flyTopLeft")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)-el.offsetWidth
+          el.style.posTop = document.body.scrollTop-offsetTop(el)-el.offsetHeight
+        }
+        else if(animation == "flyTopRight" || animation == "flyTopRightWord")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)+document.body.offsetWidth
+          el.style.posTop = document.body.scrollTop-offsetTop(el)-el.offsetHeight
+        }
+        else if(animation == "flyBottomLeft")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)-el.offsetWidth
+          el.style.posTop = document.body.scrollTop-offsetTop(el)+document.body.offsetHeight
+        }
+        else if(animation == "flyBottomRight" || animation == "flyBottomRightWord")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)+document.body.offsetWidth
+          el.style.posTop = document.body.scrollTop-offsetTop(el)+document.body.offsetHeight
+        }
+        else if(animation == "spiral")
+        {
+          el.style.posLeft = 10000-offsetLeft(el)-el.offsetWidth
+          el.style.posTop = document.body.scrollTop-offsetTop(el)-el.offsetHeight
+        }
+        else if(animation == "zoomIn")
+        {
+          el.style.posLeft = 10000
+          el.style.posTop = 0
+        }
+        else if(animation == "zoomOut")
+        {
+          el.style.posLeft = 10000
+          el.style.posTop = 0
+        }
+        else
+        {
+          el.style.posLeft = 10000-offsetLeft(el)-el.offsetWidth
+          el.style.posTop = 0
+        }
+        el.initLeft = el.style.posLeft
+        el.initTop = el.style.posTop
+        animateElements[i++] = el
+      }
+    }
+    window.setTimeout("animate();", speed)
+  }
+  function offsetLeft(el)
+  {
+    x = el.offsetLeft
+    for (e = el.offsetParent; e; e = e.offsetParent)
+      x += e.offsetLeft;
+    return x
+  } 
+  function offsetTop(el)
+  {
+    y = el.offsetTop
+    for (e = el.offsetParent; e; e = e.offsetParent)
+      y += e.offsetTop;
+    return y
+  } 
+  function startWord(ih, i)
+  {
+    for(tag = false; i < ih.length; i++)
+    {
+      c = ih.charAt(i)
+      if(c == '<')
+        tag = true
+      if(!tag)
+        return i
+      if(c == '>')
+        tag = false
+    }
+    return -1
+  }
+  function endWord(ih, i)
+  {
+    nonSpace = false
+    space = false
+    while(i < ih.length)
+    {
+      c = ih.charAt(i)
+      if(c != ' ')
+        nonSpace = true
+      if(nonSpace && c == ' ')
+        space = true
+      if(c == '<')
+        return i
+      if(space && c != ' ')
+        return i
+      i++
+    }
+    return -1
+  }
+  function outWord(ih, i1, i2, dyn, anim)
+  {
+    if(dyn)
+      outString += "<SPAN " + dynamicanimAttr + "=\"" + anim + "\" style=\"position: relative; left: 10000;\">"
+    outString += ih.substring(i1, i2)
+    if(dyn)
+      outString += "</SPAN>"
+  }
+  function animate()
+  {
+    el = animateElements[currentElement]
+    animation = el.getAttribute(dynamicanimAttr, false)
+    step++
+    if(animation == "spiral")
+    {
+      steps = stepsSpiral
+      v = step/steps
+      rf = 1.0 - v
+      t = v * 2.0*Math.PI
+      rx = Math.max(Math.abs(el.initLeft), 200)
+      ry = Math.max(Math.abs(el.initTop),  200)
+      el.style.posLeft = Math.ceil(-rf*Math.cos(t)*rx)
+      el.style.posTop  = Math.ceil(-rf*Math.sin(t)*ry)
+    }
+    else if(animation == "zoomIn")
+    {
+      steps = stepsZoom
+      el.style.fontSize = Math.ceil(50+50*step/steps) + "%"
+      el.style.posLeft = 0
+    }
+    else if(animation == "zoomOut")
+    {
+      steps = stepsZoom
+      el.style.fontSize = Math.ceil(100+200*(steps-step)/steps) + "%"
+      el.style.posLeft = 0
+    }
+    else
+    {
+      steps = stepsFly
+      if(animation == "dropWord" || animation == "flyTopRightWord" || animation == "flyBottomRightWord")
+        steps = stepsWord
+      dl = el.initLeft / steps
+      dt = el.initTop  / steps
+      el.style.posLeft = el.style.posLeft - dl
+      el.style.posTop = el.style.posTop - dt
+    }
+    if (step >= steps) 
+    {
+      el.style.posLeft = 0
+      el.style.posTop = 0
+      currentElement++
+      step = 0
+    }
+    if(currentElement < animateElements.length)
+      window.setTimeout("animate();", speed)
+  }
+//-->
+</script></head>
+
+<body onload="dynAnimation()" style="font-family: 宋体; font-size: 9pt">
+
+<p align="center"><strong><font color="#0080FF" size="6">最全注册</font></strong></p>
+
+<center><div>
+<table border="9" cellpadding="2" bgcolor="#FFFFFF" bordercolor="#C0C0C0">
+  <tr>
+    <td><a target="main"
+    onmouseover="window.status='找找吧，也许有你需要的注册机或Path   :-) ';return true"
+    href="http://www.jh.zj.cninfo.net/~corner/free/cracks.htm">最多的注册机</a></td>
+  </tr>
+  <tr>
+    <td><a target="main"
+    onmouseover="window.status='看看吧，可能有你急需的注册码   :-) ';return true"
+    href="http://www.jh.zj.cninfo.net/~corner/free/serial/index.html">最多的注册码</a></td>
+  </tr>
+</table>
+</center></div>
+
+<div align="center"><center>
+
+<table border="0" width="78%">
+  <tr>
+    <td width="100%" bgcolor="#0000B7"><ul>
+      <li><h4><a href="http://astalavista.box.sk/" style="color: rgb(255,255,0)"><font
+        face="幼圆">注册码/机集中站</font></a></h4>
+      </li>
+    </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="100%"><blockquote>
+      <p>出了名的<font face="Arial">AstalAvista.Box.Sk</font>每天都会不辞辛苦地搜索<font
+      face="Arial">Internet</font>中几千个破解站点，你只需给出软件名，就一定会找到相应的注册器或注册码，不论你的软件是最新的，还是最老的。真地很方便。你还可以从查询出来的站点找到新的破解站点。<br>
+      <font color="#800000"><strong><em>到了这个网站，你就会明白“别无所求”的真正韵味和快乐了。</em></strong></font></p>
+    </blockquote>
+    <form METHOD="GET" ACTION="http://astalavista.box.sk/cgi-bin/marek/robot/robot">
+      <p><input VALUE NAME="srch" MAXLENGTH="100" SIZE="30"><input TYPE="submit" NAME="submit"
+      VALUE="开始查询"></p>
+    </form>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p align="center"><font color="#FF00FF">如果上面的还找不到,那再试试下面的,如下面的还没有,只有等一下了:</font></p>
+<div align="center"><center>
+
+<table border="0" cellpadding="0" width="580" cellspacing="0">
+  <tr>
+    <td align="left"><ul>
+      <li><a href="http://205.160.44.30/~poopzy/serialonline/">Serial-Online! 99</a></li>
+    </ul>
+    <form action="http://209.139.21.34:9420/?warezAS+warezASHTML" method="post">
+      <ul>
+        <li><div align="left"><p><a href="http://开始查询.warez.com">warez</a> <input
+          name="开始查询" size="23"> <input type="submit" value="开始查询"></p>
+          </div></li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?crackzAS+crackzASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">crackz</a> <input name="开始查询" size="23"> 
+          <input type="submit" value="开始查询"> </li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?serialzAS+serialzASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">serialz</a> <input name="开始查询" size="23"> 
+          <input type="submit" value="开始查询"> </li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?mp3zAS+mp3zASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">mp3z</a> <input name="开始查询" size="24"> <input
+          type="submit" value="开始查询"></li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?romzAS+romzASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">gameromz</a> <input name="开始查询"
+          size="23"> <input type="submit" value="开始查询"></li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?vivozAS+vivozASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">vivoz</a> <input name="开始查询" size="23"> <input
+          type="submit" value="开始查询"></li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?hackzAS+hackzASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">hackz</a> <input name="开始查询" size="23"> <input
+          type="submit" value="开始查询"></li>
+      </ul>
+    </form>
+    <form action="http://209.139.21.34:9420/?modzAS+modzASHTML" method="post">
+      <ul>
+        <li><a href="http://开始查询.warez.com">modz</a> <input name="开始查询" size="23"> <input
+          type="submit" value="开始查询"></li>
+      </ul>
+    </form>
+    </td>
+  </tr>
+</table>
+</center></div>
+
+<p align="center">很可惜国内外的许多地方都关闭了 :-(</p>
+<div align="center"><center>
+
+<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><p align="center"><font face="宋体" color="#FF00FF" size="4">有些服务器有访问人数限制,请多试几次,用多几个连接<br>
+    (如你的浏览器不支持,请换IE3,NETSCAPE3以上)</font></td>
+  </tr>
+</table>
+</center></div>
+
+
+<table width="540">
+  <tr>
+    <td align="center" valign="middle" width="606"><!--webbot bot="HTMLMarkup" startspan -->
+     <FORM action="http://202.103.111.109/hambo/searchengine.asp" method="post">
+     <INPUT type="hidden" name="link" value="search"><!--webbot
+    bot="HTMLMarkup" endspan --> <font class="text">搜索引擎: </font><input size="35"
+    border="0" type="Text" name="keyword"> </td>
+  </tr>
+</table>
+<font FACE="宋体" SIZE="3">
+
+
+</body>
+</html>
